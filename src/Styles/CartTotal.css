@@ -1,0 +1,31 @@
+
+.cart-total{
+    height: 50px;
+    width: 100%;
+    background-color: rgb(242, 242, 242);
+    position: relative;
+}
+
+.cart-total .total-price-wrapper{
+    position: absolute;
+    height: 100%;
+    width: 30%;
+    min-width: 300px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: rgb(224, 224, 224);
+    /* padding-bottom: 0.7%; */
+}
+
+.total-price-wrapper .price-heading{
+    font-size: 18px;
+    font-weight: 500;
+    color: rgb(71, 71, 71);
+}
+
+.total-price-wrapper .total-price{
+    font-size: 18px;
+    color: rgb(15, 126, 230);
+}

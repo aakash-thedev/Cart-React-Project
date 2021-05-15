@@ -1,0 +1,11 @@
+.cart-item-screen{
+    height: auto;
+    min-height: 280px;
+    max-height: 585px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: white;
+}
