@@ -11,12 +11,10 @@ export default function AddNewProduct(props) {
     const {addProduct} = props;
 
     function addProductUtil() {
+        
         addProduct(nameRef.current.value, parseInt(priceRef.current.value), parseInt(qtyRef.current.value), imgRef.current.value);
 
-        nameRef.current.value = "";
-        priceRef.current.value = "";
-        qtyRef.current.value = "";
-        imgRef.current.value = "";
+        // clean up everything
 
         document.getElementById('name').value = "";
         document.getElementById('price').value = "";
@@ -28,7 +26,7 @@ export default function AddNewProduct(props) {
 
         <div id="input-container">
 
-            <h1>Add Products</h1>
+            <h1>Add Products To Cart</h1>
 
             <input type="text" placeholder="Product Name" ref={nameRef} required id="name" />
             <input type="number" placeholder="Product Price" ref={priceRef} required id="price" />

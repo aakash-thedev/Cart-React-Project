@@ -54,11 +54,21 @@ class CartApp extends React.Component{
         const index = products.indexOf(product);
         // we have to update qty of product at this index
 
-        products[index].product_qty += 1;
+        // products[index].product_qty += 1;
 
-        this.setState({
-            products: products
-        });
+        // this.setState({
+        //     products: products
+        // });
+
+        // ######## instead of finding product in state , find the product in db [ in componentDiMound we are setting id in data remember () --]
+        const docRef = firebase.firestore().collection('products').doc(products[index].id);
+
+        // now update this doc
+        docRef.update({
+            product_qty: products[index].product_qty + 1
+        })
+        .then(() => console.log("Updated Successfully"))
+        .catch(err => console.log('ERRRRRRR',err));
     }
 
     decreaseQuantity = (product) => {
@@ -71,11 +81,21 @@ class CartApp extends React.Component{
             return;
         }
 
-        products[index].product_qty -= 1;
+        // products[index].product_qty -= 1;
 
-        this.setState({
-            products: products
-        });
+        // this.setState({
+        //     products: products
+        // });
+
+        // ######## instead of finding product in state , find the product in db [ in componentDiMound we are setting id in data remember () --]
+        const docRef = firebase.firestore().collection('products').doc(products[index].id);
+
+        // now update this doc
+        docRef.update({
+            product_qty: products[index].product_qty - 1
+        })
+        .then(() => console.log("Updated Successfully"))
+        .catch(err => console.log('ERRRRRRR',err));
     }
 
     // ------------------------------ delete the selected cart item ----------------------- //
@@ -85,11 +105,14 @@ class CartApp extends React.Component{
         const indexOfArgProduct = products.indexOf(product);
 
         // delete this product from product array
-        products.splice(indexOfArgProduct, 1);
+        // products.splice(indexOfArgProduct, 1);
 
-        this.setState({
-            products: products
-        });
+        // this.setState({
+        //     products: products
+        // });
+
+        const docRef = firebase.firestore().collection('products').doc(products[indexOfArgProduct].id);
+        docRef.delete();
     }
 
     // ------------------------------ get the cartCount -----------------------------------//
@@ -123,6 +146,8 @@ class CartApp extends React.Component{
     displaySearchedItems = (itemName) => {
         console.log(itemName);
     }
+
+    // ----------------------- add a new product to database --------------- //
 
     addProduct = (name, price, qty, img) => {
 

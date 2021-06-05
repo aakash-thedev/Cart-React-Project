@@ -3,8 +3,7 @@
     height: 73px;
     width: 30%;
     min-width: 270px;
-    /* border: 1px solid rgb(151, 151, 151); */
-    background-color: rgb(242, 242, 242);
+    background-color: rgb(250, 249, 249);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -12,9 +11,15 @@
     padding-right: 10px;
     padding-top: 4px;
     padding-bottom: 4px;
-    /* border-radius: 8px; */
+    border-radius: 5px;
     flex-wrap: wrap;
     margin: 1.8%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.cart-item-wrapper:hover{
+    transform: scale(1.1);
 }
 
 .cart-item-wrapper .cart-item-picture{
