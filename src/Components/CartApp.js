@@ -3,6 +3,8 @@ import Navbar from './Navbar';
 import CartTotal from './CartTotal';
 import CartItemsList from './CartItemsList';
 import '../Styles/CartApp.css';
+import AddNewProduct from './AddNewProduct';
+import firebase from 'firebase';
 
 class CartApp extends React.Component{
 
@@ -13,80 +15,35 @@ class CartApp extends React.Component{
 
         this.state = {
             // this state has list of products
-            products: [
-                {
-                    product_name: 'Boat Headphone',
-                    product_price: 99,
-                    product_qty: 2,
-                    product_img: 'https://pcbonlineshop.com/photos/product/4/176/4.jpg',
-                    id: 1
-                },
-
-                {
-                    product_name: 'Acer Laptop',
-                    product_price: 999,
-                    product_qty: 1,
-                    product_img: 'https://static.acer.com/up/Resource/Acer/Laptops/acer-chromebook-spin-511/image/20210120/Chromebook-Spin-511-R753T-Bk-modelmain.png',
-                    id: 2
-                },
-
-                {
-                    product_name: 'Jacket (Lewis)',
-                    product_price: 199,
-                    product_qty: 3,
-                    product_img: 'https://5.imimg.com/data5/EH/YQ/MY-39127286/mens-cotton-jacket-500x500.jpg',
-                    id: 3
-                },
-
-                {
-                    product_name: 'Sneakers',
-                    product_price: 149,
-                    product_qty: 1,
-                    product_img: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/sneaker-index-1587142381.jpg?crop=0.502xw:1.00xh;0.498xw,0&resize=640:*',
-                    id: 4
-                },
-
-                {
-                    product_name: 'Watch',
-                    product_price: 99,
-                    product_qty: 1,
-                    product_img: 'https://image01.oneplus.net/ebp/202103/12/1-m00-21-ed-rb8bwmbk1wgadz8_aai9rijgk7q405.png',
-                    id: 5
-                },
-
-                {
-                    product_name: 'One Plus Nord',
-                    product_price: 999,
-                    product_qty: 1,
-                    product_img: 'https://www.gizmochina.com/wp-content/uploads/2020/10/OnePlus-Nord-N100-1.jpg',
-                    id: 6
-                },
-
-                {
-                    product_name: 'Bench Press',
-                    product_price: 499,
-                    product_qty: 1,
-                    product_img: 'https://images-na.ssl-images-amazon.com/images/I/81M2AvweC3L._AC_SX425_.jpg',
-                    id: 7
-                },
-
-                {
-                    product_name: 'T-Shirt',
-                    product_price: 49,
-                    product_qty: 5,
-                    product_img: 'https://images-na.ssl-images-amazon.com/images/I/610irNyucGL._UL1500_.jpg',
-                    id: 8
-                },
-
-                {
-                    product_name: 'Playstation 5',
-                    product_price:9999,
-                    product_qty: 1,
-                    product_img: 'https://en.letsgodigital.org/uploads/2020/07/sony-playstation-5-black-version.jpg',
-                    id: 9
-                }
-            ]
+            products: [],
+            loading: true
         }
+    }
+
+    componentDidMount() {
+
+        firebase
+            .firestore()
+            .collection('products')
+            .onSnapshot((snapshot) => {
+
+                // this snapshot.docs is collection of data
+                // snapshot.docs.map((doc) => {
+                //     console.log(doc.data());
+                //     return;
+                // });
+
+                const products = snapshot.docs.map((doc) => {
+                    const data = doc.data();
+                    data['id'] = doc.id;
+                    return data;
+                });
+
+                this.setState({
+                    products,
+                    loading: false
+                });
+            });
     }
 
     // all other functions can reside here broo
@@ -167,29 +124,56 @@ class CartApp extends React.Component{
         console.log(itemName);
     }
 
+    addProduct = (name, price, qty, img) => {
+
+        // add the details to firebase
+        firebase
+            .firestore()
+            .collection('products')
+            .add({
+                product_name: name,
+                product_price: parseInt(price),
+                product_qty: parseInt(qty),
+                product_img: img
+            })
+            .then((docRef) => {
+                console.log("New Product has been added ", docRef);
+            })
+            .catch((err) => {
+                console.log("Error creating product ", err);
+            });
+    }
+
 
     // then finally
     render(){
 
-        const { products } = this.state;
+        const { products, loading } = this.state;
 
         return(
 
-            <div className="container">
+            <main id="app-root">
 
-                <Navbar count = {this.getCartCount()}
-                        displaySearchedItems = {this.displaySearchedItems}
-                />
+                <AddNewProduct addProduct = {this.addProduct} />
 
-                <CartItemsList products = {products}
-                                increaseQuantity = {this.increaseQuantity}
-                                decreaseQuantity = {this.decreaseQuantity}
-                                deleteCartItem = {this.deleteCartItem}
-                />
+                <div className="container">
 
-                <CartTotal totalPrice = {this.getTotalPrice()}/>
+                    {loading && <h1>Loading Products...</h1>}
 
-            </div>
+                    <Navbar count = {this.getCartCount()}
+                            displaySearchedItems = {this.displaySearchedItems}
+                    />
+
+                    <CartItemsList products = {products}
+                                    increaseQuantity = {this.increaseQuantity}
+                                    decreaseQuantity = {this.decreaseQuantity}
+                                    deleteCartItem = {this.deleteCartItem}
+                    />
+
+                    <CartTotal totalPrice = {this.getTotalPrice()}/>
+
+                </div>
+            </main>
         );
     }
 }

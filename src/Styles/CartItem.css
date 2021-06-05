@@ -1,8 +1,8 @@
 .cart-item-wrapper{
     position: relative;
     height: 73px;
-    width: 25%;
-    min-width: 260px;
+    width: 30%;
+    min-width: 270px;
     /* border: 1px solid rgb(151, 151, 151); */
     background-color: rgb(242, 242, 242);
     display: flex;
