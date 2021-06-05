@@ -1,25 +1,32 @@
-import React from 'react';
 import '../Styles/Navbar.css';
+import cartIcon from '../Styles/icons8-shopping-cart-48.png';
 
-class Navbar extends React.Component{
+// ------------ all those components which dont have any state must be a functional component --------------- //
 
-    render(){
+const Navbar = (props) => {
 
-        return(
-            <nav className="navbar">
-                <span className="logo-section">
-                    <img src="https://www.nicepng.com/png/detail/202-2022682_online-shopping-logo-png.png" alt="logo" />
+    const { count, displaySearchedItems } = props;
+
+    return(
+
+        <nav className="navbar">
+
+            <span className="logo-section">
+                <img src="https://www.nicepng.com/png/detail/202-2022682_online-shopping-logo-png.png" alt="logo" />
+            </span>
+
+            <section className="cart-and-search">
+
+                <input className="search-cart-item" placeholder="Search in your cart..." onChange={(event) => displaySearchedItems(event.target.value)}></input>
+                <span className="side-logo-wrapper">
+                <img src={cartIcon} alt="shopping-cart" />
+                <span className="total-item"> {count} </span>
                 </span>
-                <section className="cart-and-search">
-                    <input className="search-cart-item" placeholder="Search in your cart..."></input>
-                    <span className="side-logo-wrapper">
-                    <img src="https://img-premium.flaticon.com/png/512/879/879815.png?token=exp=1621066913~hmac=73b257f5b610f5f5cf8346943623bc08" alt="shopping-cart" />
-                    <span className="total-item">9</span>
-                    </span>
-                </section>
-            </nav>
-        );
-    }
+
+            </section>
+
+        </nav>
+    );
 }
 
 export default Navbar;

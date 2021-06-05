@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import CartTotal from './CartTotal';
 import CartItemsList from './CartItemsList';
-import '../Styles/CartContainer.css';
+import '../Styles/CartApp.css';
 
 class CartApp extends React.Component{
 
@@ -135,6 +135,38 @@ class CartApp extends React.Component{
         });
     }
 
+    // ------------------------------ get the cartCount -----------------------------------//
+    getCartCount = () => {
+
+        let count = 0;
+        const { products } = this.state;
+
+        products.forEach((product) => {
+            count += product.product_qty;
+        });
+
+        return count;
+    }
+
+    // ------------------------------ get the totalPrice -----------------------------------//
+    getTotalPrice = () => {
+
+        let totalPrice = 0;
+        const { products } = this.state;
+
+        products.forEach((product) => {
+            totalPrice += (product.product_price * product.product_qty);
+        });
+
+        return totalPrice;
+    }
+
+    // ----------------------- display searched items ------------------- //
+
+    displaySearchedItems = (itemName) => {
+        console.log(itemName);
+    }
+
 
     // then finally
     render(){
@@ -145,7 +177,9 @@ class CartApp extends React.Component{
 
             <div className="container">
 
-                <Navbar />
+                <Navbar count = {this.getCartCount()}
+                        displaySearchedItems = {this.displaySearchedItems}
+                />
 
                 <CartItemsList products = {products}
                                 increaseQuantity = {this.increaseQuantity}
@@ -153,7 +187,7 @@ class CartApp extends React.Component{
                                 deleteCartItem = {this.deleteCartItem}
                 />
 
-                <CartTotal />
+                <CartTotal totalPrice = {this.getTotalPrice()}/>
 
             </div>
         );
